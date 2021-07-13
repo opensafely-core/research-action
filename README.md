@@ -1,8 +1,10 @@
 # OpenSAFELY Research Action
 
 This repo provides a GitHub Action for verifying that
-[OpenSAFELY](https://docs.opensafely.org/) research repos can run
-correctly.
+[OpenSAFELY](https://docs.opensafely.org/) research repos 
+do not contain calls to 
+[cohort extractor](https://github.com/opensafely-core/cohort-extractor) 
+methods which access restricted data sets
 
 It is written as a "[composite run steps][1]" action.
 
