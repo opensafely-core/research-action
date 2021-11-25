@@ -39,6 +39,14 @@ echo
 
 echo
 echo "$long_line"
+echo "${bold}→ Checking datasets${reset}"
+echo "  opensafely check"
+echo
+opensafely check
+echo
+
+echo
+echo "$long_line"
 echo "${bold}→ Running all project actions${reset}"
 echo "  opensafely run run_all --continue-on-error"
 echo
