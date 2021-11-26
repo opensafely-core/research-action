@@ -3,3 +3,30 @@ runs:
   steps:
     - run: $GITHUB_ACTION_PATH/action.sh
       shell: bash
+    - name: 'Comment PR'
+      uses: actions/github-script@v5
+      if: ${{github.event_name == 'pull_request' && env.CHECK_STATUS == 'fail'}}
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: | 
+        //if not a PR, create issue:
+        if (context.issue.number == null) {
+          issue_body = 'Dataset check fail @amirmehrkar at '
+          issue_body = issue_body + context.sha
+          github.rest.issues.create({
+            context.repo.owner,
+            context.repo.repo,
+            title='Dataset check fail',
+            body: issue_body }
+            );
+        }
+        //else comment on PR
+        else {
+          github.rest.issues.createComment({
+            context.repo.owner,
+            repo,
+            context.repo.repo,
+            body: 'Dataset check fail @amirmehrkar',
+          });
+        }
+      

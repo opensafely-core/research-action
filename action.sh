@@ -42,7 +42,9 @@ echo "$long_line"
 echo "${bold}→ Checking datasets${reset}"
 echo "  opensafely check"
 echo
-opensafely check
+if ! opensafely check; then
+  export CHECK_STATUS="fail"
+fi
 echo
 
 echo
