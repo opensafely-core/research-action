@@ -40,9 +40,9 @@ echo
 echo
 echo "$long_line"
 echo "${bold}→ Checking datasets${reset}"
-echo "  opensafely check"
+echo "  opensafely check --error"
 echo
-opensafely check
+opensafely check --error
 echo
 
 echo
