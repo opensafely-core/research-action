@@ -40,8 +40,10 @@ The [research-template][2] repo includes such a [workflow file][3] already.
 ## Releasing a new version
 
 Existing workflow files reference this repo using the `v1` tag. If you make
-backwards compatible changes to this repo you'll need to manually update the
-`v1` tag.
+backwards compatible changes to this repo you'll need to update the
+`v1` tag:
+
+    `make tag-release`
 
 Breaking changes should use a new version tag so that tests for existing
 repos continue to pass.
