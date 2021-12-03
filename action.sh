@@ -42,7 +42,17 @@ echo "$long_line"
 echo "${bold}→ Checking datasets${reset}"
 echo "  opensafely check"
 echo
-opensafely check
+if ! opensafely check; then
+  curl \
+        -X POST \
+        --silent \
+        -H "Accept: application/vnd.github.v3+json" \
+        -H "$auth_header" \
+        https://api.github.com/repos/$GITHUB_REPOSITORY/issues \
+        -d "{\"body\":\"Dataset check fail @opensafely/data-access at $GITHUB_SHA\", \"title\":\"Dataset check fail\"}" \
+        >/dev/null
+  exit 1
+fi
 echo
 
 echo
