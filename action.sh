@@ -49,7 +49,7 @@ if ! opensafely check; then
         -H "Accept: application/vnd.github.v3+json" \
         -H "$auth_header" \
         https://api.github.com/repos/$GITHUB_REPOSITORY/issues \
-        -d "{\"body\":\"Dataset check fail @opensafely/data-access at $GITHUB_SHA\", \"title\":\"Dataset check fail\"}" \
+        -d "{\"body\":\"Dataset check fail @amirmehrkar @Jongmassey @bloodearnest at $GITHUB_SHA\", \"title\":\"Dataset check fail\"}" \
         >/dev/null
   exit 1
 fi
