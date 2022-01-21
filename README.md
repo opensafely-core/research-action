@@ -43,7 +43,7 @@ Existing workflow files reference this repo using the `v1` tag. If you make
 backwards compatible changes to this repo you'll need to update the
 `v1` tag:
 
-    `make tag-release`
+    make tag-release
 
 Breaking changes should use a new version tag so that tests for existing
 repos continue to pass.
