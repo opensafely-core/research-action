@@ -24,7 +24,7 @@ jobs:
 
   test-codelists:
     runs-on: ubuntu-20.04
-    name: Test codelists failure
+    name: Test report codelists need updating
     steps:
       - name: Checkout
         uses: actions/checkout@v2

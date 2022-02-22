@@ -1,3 +1,3 @@
 tag-release:
-	git tag v1 --force
+	git tag v2 --force
 	git push --tags --force

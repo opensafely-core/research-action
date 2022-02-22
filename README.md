@@ -9,11 +9,12 @@ It is written as a "[composite run steps][1]" action.
 
 ## Tests
 
-The action is tested in CI by running it against a known good commit of
-a testing project. You can test it locally by running:
-```
-./test.sh
-```
+Github actions are very difficult to test locally. The approach we use it to
+make Github our test runner, effectively doing integration tests.
+
+So, to test, you need to push your changes to github. The tests themselves are
+written as Github action jobs that run this action against a set of test
+scenarios.
 
 
 ## Usage
@@ -31,7 +32,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: opensafely-core/research-action@v1
+    - uses: actions/checkout@v2
+    - uses: opensafely-core/research-action@v2
 ```
 
 The [research-template][2] repo includes such a [workflow file][3] already.
@@ -39,9 +41,9 @@ The [research-template][2] repo includes such a [workflow file][3] already.
 
 ## Releasing a new version
 
-Existing workflow files reference this repo using the `v1` tag. If you make
+Existing workflow files reference this repo using the `v2` tag. If you make
 backwards compatible changes to this repo you'll need to update the
-`v1` tag:
+`v2` tag:
 
     `make tag-release`
 
