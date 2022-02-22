@@ -6,11 +6,23 @@ env:
  STATA_LICENSE: ${{ secrets.STATA_LICENSE }}
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  unit-test:
+    runs-on: ubuntu-20.04
     name: Run test suite
     steps:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Test
       run: ./test.sh
+  
+  action-test:
+    runs-on: ubuntu-20.04
+    name: Run actual action
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run action
+        uses: ./
+        # checkout the gh testing repo so we have something to test against
+        with:
+            project_dir: ./test-project
