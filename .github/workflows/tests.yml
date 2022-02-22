@@ -6,11 +6,18 @@ env:
  STATA_LICENSE: ${{ secrets.STATA_LICENSE }}
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    name: Run test suite
+  test-action:
+    runs-on: ubuntu-20.04
+    name: Test action
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Test
-      run: ./test.sh
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Checkout gh-research-testing
+        uses: actions/checkout@v2
+        with:
+            repository: opensafely/gh-research-testing
+            path: gh-research-testing
+      - name: Run action
+        uses: ./
+        with:
+            directory: gh-research-testing
