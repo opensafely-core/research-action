@@ -7,16 +7,6 @@ correctly.
 It is written as a "[composite run steps][1]" action.
 
 
-## Tests
-
-Github actions are very difficult to test locally. The approach we use it to
-make Github our test runner, effectively doing integration tests.
-
-So, to test, you need to push your changes to github. The tests themselves are
-written as Github action jobs that run this action against a set of test
-scenarios.
-
-
 ## Usage
 
 You can invoke this action from a Github workflow file (e.g.
@@ -37,6 +27,23 @@ jobs:
 ```
 
 The [research-template][2] repo includes such a [workflow file][3] already.
+
+
+## Tests
+
+Github actions are very difficult to test locally. The approach we use is to a)
+lint locally using https://github.com/rhysd/actionlint and b) use Github as our
+test runner, effectively doing integration tests.
+
+So, to test, you need to first run lint:
+
+    make lint
+
+When ready, commit and push your changes to github, which will run the
+integration test suite in parallel. If you have the gh cli installed, you can
+check on the state of the test run:
+
+    gh pr status
 
 
 ## Releasing a new version
