@@ -1,5 +1,56 @@
+inputs:
+  directory: 
+    description: "Directory containing OpenSAFELY project"
+    required: false
+    default: . 
+  users:
+    description: "@names of users who should be notified on dataset failure"
+    required: false
+    default: "@amirmehrkar @Jongmassey @bloodearnest"
+
+outputs:
+  issue:
+    description: "url of issue created"
+    value: ${{ steps.datasets.outputs.issue }}
+
 runs:
   using: "composite"
   steps:
-    - run: $GITHUB_ACTION_PATH/action.sh
+    - name: Install opensafely
       shell: bash
+      run: |
+          python3 -m pip install --quiet --upgrade opensafely
+          opensafely --version
+    - name: Check codelists
+      shell: bash
+      working-directory: ${{ inputs.directory }}
+      run: opensafely codelists check
+    - name: Check datasets
+      shell: bash
+      id: datasets
+      working-directory: ${{ inputs.directory }}
+      run: |
+        success=true
+        OUTPUT=$(opensafely check 2>&1) || success=false
+        echo "$OUTPUT"
+        # exit early if we're all good
+        test "$success" = "true" && exit 0
+
+        BODY=$(cat << EOF
+        Dataset check for $GITHUB_REPOSITORY at $GITHUB_SHA:
+        \`\`\`
+        $OUTPUT
+        \`\`\`
+        ${{ inputs.users }}
+        EOF
+        )
+
+        ISSUE_URL=$(gh issue create --title "Dataset check fail" --body "$BODY")
+
+        echo "Created issue at $ISSUE_URL"
+        echo "::set-output name=issue::$ISSUE_URL"
+        exit 1
+    - name: Run project
+      shell: bash
+      working-directory: ${{ inputs.directory }}
+      run: opensafely run run_all --continue-on-error --timestamps --format-output-for-github

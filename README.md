@@ -7,15 +7,6 @@ correctly.
 It is written as a "[composite run steps][1]" action.
 
 
-## Tests
-
-The action is tested in CI by running it against a known good commit of
-a testing project. You can test it locally by running:
-```
-./test.sh
-```
-
-
 ## Usage
 
 You can invoke this action from a Github workflow file (e.g.
@@ -31,17 +22,35 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: opensafely-core/research-action@v1
+    - uses: actions/checkout@v2
+    - uses: opensafely-core/research-action@v2
 ```
 
 The [research-template][2] repo includes such a [workflow file][3] already.
 
 
+## Tests
+
+Github actions are very difficult to test locally. The approach we use is to a)
+lint locally using https://github.com/rhysd/actionlint and b) use Github as our
+test runner, effectively doing integration tests.
+
+So, to test, you need to first run lint:
+
+    make lint
+
+When ready, commit and push your changes to github, which will run the
+integration test suite in parallel. If you have the gh cli installed, you can
+check on the state of the test run:
+
+    gh pr status
+
+
 ## Releasing a new version
 
-Existing workflow files reference this repo using the `v1` tag. If you make
+Existing workflow files reference this repo using the `v2` tag. If you make
 backwards compatible changes to this repo you'll need to update the
-`v1` tag:
+`v2` tag:
 
     make tag-release
 

@@ -6,11 +6,77 @@ env:
  STATA_LICENSE: ${{ secrets.STATA_LICENSE }}
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    name: Run test suite
+  test-action:
+    runs-on: ubuntu-20.04
+    name: Test action
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Test
-      run: ./test.sh
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Checkout gh-testing-research
+        uses: actions/checkout@v2
+        with:
+            repository: opensafely/gh-testing-research
+            path: gh-testing-research
+      - name: Run action
+        uses: ./
+        with:
+            directory: gh-testing-research
+
+  lint-action:
+    runs-on: ubuntu-20.04
+    name: Lint action
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Lint
+        run: make lint
+ 
+  test-codelists:
+    runs-on: ubuntu-20.04
+    name: Test report codelists need updating
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Test project with failing codelists check
+        uses: ./
+        id: codelists
+        continue-on-error: true
+        with:
+            directory: tests/codelists
+      - name: Assert codelists check failed
+        run: |
+            if test "${{ steps.codelists.outcome }}" != "failure"; then
+                echo "Action should have failed with codelists error"
+                exit 1
+            fi
+
+  test-check:
+    runs-on: ubuntu-20.04
+    name: Test dataset check failure
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Test project with failing codelists check
+        uses: ./
+        id: dataset
+        continue-on-error: true
+        with:
+            directory: tests/dataset
+            users: '@nobody' 
+      - name: Assert check failed and created issue
+        env:
+            ISSUE_URL: ${{ steps.dataset.outputs.issue }}
+        run: |
+            fail() { 
+                echo "$@"
+                exit 1
+            }
+            cleanup() { 
+                gh issue close "$ISSUE_URL" || true
+            }
+            trap cleanup EXIT
+            test "${{ steps.dataset.outcome }}" = "failure" || fail "Action should have failed with dataset error"
+            test -n "$ISSUE_URL" || fail "No issue url output from dataset step"
+            gh issue view "$ISSUE_URL" || fail "Could not view issue at $ISSUE_URL"
+
+
