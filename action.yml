@@ -18,9 +18,11 @@ runs:
   steps:
     - name: Install opensafely
       shell: bash
+      # run: |
+      #     python3 -m pip install --quiet --upgrade opensafely
+      #     opensafely --version
       run: |
-          python3 -m pip install --quiet --upgrade opensafely
-          opensafely --version
+        python3 -m pip install git+https://github.com/opensafely-core/opensafely-cli.git@log-stats
     - name: Check codelists
       shell: bash
       working-directory: ${{ inputs.directory }}
@@ -54,3 +56,7 @@ runs:
       shell: bash
       working-directory: ${{ inputs.directory }}
       run: opensafely run run_all --continue-on-error --timestamps --format-output-for-github
+    - name: Parse stats logs
+      shell: bash
+      run: opensafely log-stats
+      working-directory: ${{ inputs.directory }}

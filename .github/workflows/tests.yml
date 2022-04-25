@@ -21,7 +21,14 @@ jobs:
         uses: ./
         with:
             directory: gh-testing-research
-
+      - name: Assert log-stats file created
+        run: |
+            if test -f gh-testing-research/metadata/log_stats.json; then
+                echo "log-stats.json file exists"
+            else
+                echo "Action should have created log-stats.json file"
+                exit 1
+            fi
   lint-action:
     runs-on: ubuntu-20.04
     name: Lint action
