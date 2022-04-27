@@ -19,11 +19,20 @@ build:
     # build the thing
     docker-compose build --pull
 
+# Run honeytail service (build if necessary) using docker-compose
 run log_file api_key:
     #!/usr/bin/env bash
 
     export LOG_FILE_PATH={{ log_file }}
     export HONEYCOMB_WRITE_KEY={{ api_key }}
     echo "setting LOG_FILE_PATH=$LOG_FILE_PATH"
-    # build the thing
     docker-compose run --rm honeytail
+
+# Run honeytail using latest image
+run_image log_file api_key:
+    #!/usr/bin/env bash
+    echo "Using log file {{ log_file }}"
+    docker run --rm \
+    --volume {{ log_file }}:/src/log_file.json \
+    --env HONEYCOMB_WRITE_KEY={{ api_key }} \
+    ghcr.io/opensafely-core/honeytail:latest

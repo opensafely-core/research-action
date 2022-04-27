@@ -61,10 +61,7 @@ runs:
       shell: bash
       run: opensafely extract-stats
       working-directory: ${{ inputs.directory }}
-    - name: Build honeycomb
-      shell: bash
-      run: just docker/build
     - name: Send extracted stats to honeycomb
       shell: bash
       run: |
-        just docker/run $GITHUB_ACTION_PATH/${{ inputs.directory }}/metadata/extracted_stats.json $HONEYCOMB_API_KEY
+        just docker/run_image $GITHUB_ACTION_PATH/${{ inputs.directory }}/metadata/extracted_stats.json $HONEYCOMB_API_KEY
