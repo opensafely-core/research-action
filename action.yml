@@ -59,12 +59,12 @@ runs:
       run: opensafely run run_all --continue-on-error --timestamps --format-output-for-github
     - name: Parse stats logs
       shell: bash
-      run: opensafely log-stats
+      run: opensafely extract-stats
       working-directory: ${{ inputs.directory }}
     - name: Build honeycomb
       shell: bash
       run: just docker/build
-    - name: Send log-stats to honeycomb
+    - name: Send extracted stats to honeycomb
       shell: bash
       run: |
-        just docker/run $GITHUB_ACTION_PATH/${{ inputs.directory }}/metadata/log_stats.json $HONEYCOMB_API_KEY
+        just docker/run $GITHUB_ACTION_PATH/${{ inputs.directory }}/metadata/extracted_stats.json $HONEYCOMB_API_KEY

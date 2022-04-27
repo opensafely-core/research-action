@@ -20,18 +20,18 @@ jobs:
             path: gh-testing-research
       - name: Run action
         # It will fail on sending data to honeycomb because we're providing a 
-        # dummy api key, but the log-stats file should be created if it completed 
+        # dummy api key, but the extracted_stats file should be created if it completed 
         # the rest of the steps
         uses: ./
         continue-on-error: true
         with:
             directory: gh-testing-research
-      - name: Assert log-stats file created
+      - name: Assert extracted stats file created
         run: |
-            if test -f gh-testing-research/metadata/log_stats.json; then
-                echo "log_stats.json file exists"
+            if test -f gh-testing-research/metadata/extracted_stats.json; then
+                echo "extracted_stats.json file exists"
             else
-                echo "Action should have created log_stats.json file"
+                echo "Action should have created extracted_stats.json file"
                 exit 1
             fi
   lint-action:
