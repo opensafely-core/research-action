@@ -19,11 +19,9 @@ runs:
     - uses: extractions/setup-just@aa5d15c144db4585980a44ebfdd2cf337c4f14cb  # v1.4.0
     - name: Install opensafely
       shell: bash
-      # run: |
-      #     python3 -m pip install --quiet --upgrade opensafely
-      #     opensafely --version
       run: |
-        python3 -m pip install git+https://github.com/opensafely-core/opensafely-cli.git@log-stats
+          python3 -m pip install --quiet --upgrade opensafely
+          opensafely --version
     - name: Check codelists
       shell: bash
       working-directory: ${{ inputs.directory }}
