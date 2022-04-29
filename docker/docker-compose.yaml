@@ -17,5 +17,13 @@ services:
         - BUILDKIT_INLINE_CACHE=1
     environment:
       - HONEYCOMB_WRITE_KEY=${HONEYCOMB_WRITE_KEY}
+      - DATASET=${DATASET:-research-action}
     volumes:  
       - $LOG_FILE_PATH:/src/log_file.json
+
+  honeytail-dev:
+    image: honeytail-dev
+    extends:
+      service: honeytail
+    environment:
+    - DATASET=research-action-test

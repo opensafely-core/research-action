@@ -24,7 +24,7 @@ CMD [ "/bin/sh", "-c", "./honeytail \
             --parser json \
             --writekey $HONEYCOMB_WRITE_KEY \
             --file $LOG_FILENAME \
-            --dataset 'research-action' \
+            --dataset $DATASET \
             --backfill" ]
 
 # finally, tag with build information. These will change regularly, therefore

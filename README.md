@@ -39,6 +39,12 @@ docker tag honeytail ghcr.io/opensafely-core/honeytail:latest
 docker push ghcr.io/opensafely-core/honeytail:latest
 ```
 
+To build a dev image that will push to a test dataset (`research-action-test`):
+```
+just docker/build-dev
+just docker/run <path/to/log/file> <HONEYCOMB_API_KEY>
+```
+
 ## Tests
 
 Github actions are very difficult to test locally. The approach we use is to a)

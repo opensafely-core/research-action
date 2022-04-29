@@ -17,18 +17,25 @@ build:
     export BUILD_DATE=$(date -u +'%y-%m-%dT%H:%M:%SZ')
     export GITREF=$(git rev-parse --short HEAD)
     # build the thing
-    docker-compose build --pull
+    docker-compose build --pull honeytail
 
-# Run honeytail service (build if necessary) using docker-compose
-run log_file api_key:
+
+build-dev:
     #!/usr/bin/env bash
+    docker-compose build --pull honeytail-dev
 
+
+# Run honeytail dev service (build if necessary) using docker-compose
+# This sends to a test dataset
+run log_file api_key image="honeytail-dev":
+    #!/usr/bin/env bash
     export LOG_FILE_PATH={{ log_file }}
     export HONEYCOMB_WRITE_KEY={{ api_key }}
     echo "setting LOG_FILE_PATH=$LOG_FILE_PATH"
-    docker-compose run --rm honeytail
+    docker-compose run --rm {{ image }}
 
 # Run honeytail using latest image
+# This sends to the prod dataset
 run_image log_file api_key:
     #!/usr/bin/env bash
     echo "Using log file {{ log_file }}"
