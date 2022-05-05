@@ -16,7 +16,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - uses: extractions/setup-just@aa5d15c144db4585980a44ebfdd2cf337c4f14cb  # v1.4.0
     - name: Install opensafely
       shell: bash
       run: |
@@ -64,4 +63,7 @@ runs:
       if: ${{ env.HONEYCOMB_API_KEY }}
       shell: bash
       run: |
-        just docker/run_image $GITHUB_ACTION_PATH/${{ inputs.directory }}/metadata/extracted_stats.json $HONEYCOMB_API_KEY
+        docker run --pull=missing --rm \
+        --volume $GITHUB_ACTION_PATH/${{ inputs.directory }}/metadata/extracted_stats.json:/src/log_file.json \
+        --env HONEYCOMB_WRITE_KEY=$HONEYCOMB_API_KEY \
+        ghcr.io/opensafely-core/honeytail:latest
