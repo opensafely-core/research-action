@@ -20,7 +20,8 @@ ENV HONEYCOMB_WRITE_KEY NULL
 # The target log file is mounted to this location when the container is run
 ENV LOG_FILENAME /src/log_file.json
 
-CMD [ "/bin/sh", "-c", "./honeytail \
+CMD [ "/bin/sh", "-c", \
+            "[ $HONEYCOMB_WRITE_KEY = dummy-key ] && echo 'Dummy key found, nothing to do here.' || ./honeytail \
             --parser json \
             --writekey $HONEYCOMB_WRITE_KEY \
             --file $LOG_FILENAME \
