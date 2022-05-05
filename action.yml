@@ -56,10 +56,12 @@ runs:
       working-directory: ${{ inputs.directory }}
       run: opensafely run run_all --continue-on-error --timestamps --format-output-for-github
     - name: Parse stats logs
+      if: ${{ env.HONEYCOMB_API_KEY }}
       shell: bash
       run: opensafely extract-stats
       working-directory: ${{ inputs.directory }}
     - name: Send extracted stats to honeycomb
+      if: ${{ env.HONEYCOMB_API_KEY }}
       shell: bash
       run: |
         just docker/run_image $GITHUB_ACTION_PATH/${{ inputs.directory }}/metadata/extracted_stats.json $HONEYCOMB_API_KEY
