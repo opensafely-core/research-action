@@ -4,12 +4,13 @@ on: [push]
 env:
  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  STATA_LICENSE: ${{ secrets.STATA_LICENSE }}
- HONEYCOMB_API_KEY: dummy-key
 
 jobs:
   test-action:
     runs-on: ubuntu-20.04
     name: Test action
+    env:
+      HONEYCOMB_API_KEY: dummy-key
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -28,6 +29,27 @@ jobs:
                 echo "extracted_stats.json file exists"
             else
                 echo "Action should have created extracted_stats.json file"
+                exit 1
+            fi
+  test-no-honeycomb-api-key:
+    runs-on: ubuntu-20.04
+    name: Test no Honeycomb API key
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Checkout gh-testing-research
+        uses: actions/checkout@v2
+        with:
+            repository: opensafely/gh-testing-research
+            path: gh-testing-research-no-honeycomb-key
+      - name: Run action
+        uses: ./
+        with:
+            directory: gh-testing-research-no-honeycomb-key
+      - name: Assert extracted stats file not created
+        run: |
+            if test -f gh-testing-research-no-honeycomb-key/metadata/extracted_stats.json; then
+                echo "Action should have skipped running extract-stats"
                 exit 1
             fi
   lint-action:
