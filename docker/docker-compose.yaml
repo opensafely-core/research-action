@@ -1,0 +1,29 @@
+# note: we do not run prod service with docker-compose, we use it just for
+# configuring the production build
+services:
+  honeytail:
+    # image name, both locally and public
+    image: honeytail
+    build:
+      context: ..
+      # path relative to context
+      dockerfile: docker/Dockerfile
+      # should speed up the build in CI, where we have a cold cache
+      cache_from:  # should speed up the build in CI, where we have a cold cache
+        - ghcr.io/opensafely-core/base-docker
+        - ghcr.io/opensafely-core/honeytail
+      args:
+        # this makes the image work for later cache_from: usage
+        - BUILDKIT_INLINE_CACHE=1
+    environment:
+      - HONEYCOMB_WRITE_KEY=${HONEYCOMB_WRITE_KEY}
+      - DATASET=${DATASET:-research-action}
+    volumes:  
+      - $LOG_FILE_PATH:/src/log_file.json
+
+  honeytail-dev:
+    image: honeytail-dev
+    extends:
+      service: honeytail
+    environment:
+    - DATASET=research-action-test

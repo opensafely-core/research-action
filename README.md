@@ -29,6 +29,22 @@ jobs:
 The [research-template][2] repo includes such a [workflow file][3] already.
 
 
+## Honeytail
+
+The Action also extracts stats from the test run and sends them to our [Honeycomb ](https://www.honeycomb.io/) `research-action` dataset, via [honeytail](https://github.com/honeycombio/honeytail).  The action will run using the latest honeytail docker image.  If you need to update the docker image, run:
+
+```
+just docker/build
+docker tag honeytail ghcr.io/opensafely-core/honeytail:latest
+docker push ghcr.io/opensafely-core/honeytail:latest
+```
+
+To build a dev image that will push to a test dataset (`research-action-test`):
+```
+just docker/build-dev
+just docker/run <path/to/log/file> <HONEYCOMB_API_KEY>
+```
+
 ## Tests
 
 Github actions are very difficult to test locally. The approach we use is to a)

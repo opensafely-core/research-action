@@ -4,6 +4,7 @@ on: [push]
 env:
  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  STATA_LICENSE: ${{ secrets.STATA_LICENSE }}
+ HONEYCOMB_API_KEY: dummy-key
 
 jobs:
   test-action:
@@ -21,7 +22,14 @@ jobs:
         uses: ./
         with:
             directory: gh-testing-research
-
+      - name: Assert extracted stats file created
+        run: |
+            if test -f gh-testing-research/metadata/extracted_stats.json; then
+                echo "extracted_stats.json file exists"
+            else
+                echo "Action should have created extracted_stats.json file"
+                exit 1
+            fi
   lint-action:
     runs-on: ubuntu-20.04
     name: Lint action

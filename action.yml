@@ -16,6 +16,7 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - uses: extractions/setup-just@aa5d15c144db4585980a44ebfdd2cf337c4f14cb  # v1.4.0
     - name: Install opensafely
       shell: bash
       run: |
@@ -54,3 +55,11 @@ runs:
       shell: bash
       working-directory: ${{ inputs.directory }}
       run: opensafely run run_all --continue-on-error --timestamps --format-output-for-github
+    - name: Parse stats logs
+      shell: bash
+      run: opensafely extract-stats
+      working-directory: ${{ inputs.directory }}
+    - name: Send extracted stats to honeycomb
+      shell: bash
+      run: |
+        just docker/run_image $GITHUB_ACTION_PATH/${{ inputs.directory }}/metadata/extracted_stats.json $HONEYCOMB_API_KEY

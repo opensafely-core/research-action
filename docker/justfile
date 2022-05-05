@@ -1,0 +1,45 @@
+export DOCKER_USERID := `id -u`
+export DOCKER_GROUPID := `id -g`
+
+# Load .env files by default
+set dotenv-load := true
+
+# enable modern docker build features
+export DOCKER_BUILDKIT := "1"
+export COMPOSE_DOCKER_CLI_BUILD := "1"
+
+export BIN := "/opt/venv/bin"
+
+build:
+    #!/usr/bin/env bash
+
+    # set build args for prod builds
+    export BUILD_DATE=$(date -u +'%y-%m-%dT%H:%M:%SZ')
+    export GITREF=$(git rev-parse --short HEAD)
+    # build the thing
+    docker-compose build --pull honeytail
+
+
+build-dev:
+    #!/usr/bin/env bash
+    docker-compose build --pull honeytail-dev
+
+
+# Run honeytail dev service (build if necessary) using docker-compose
+# This sends to a test dataset
+run log_file api_key image="honeytail-dev":
+    #!/usr/bin/env bash
+    export LOG_FILE_PATH={{ log_file }}
+    export HONEYCOMB_WRITE_KEY={{ api_key }}
+    echo "setting LOG_FILE_PATH=$LOG_FILE_PATH"
+    docker-compose run --rm {{ image }}
+
+# Run honeytail using latest image
+# This sends to the prod dataset
+run_image log_file api_key:
+    #!/usr/bin/env bash
+    echo "Using log file {{ log_file }}"
+    docker run --pull=missing --rm \
+    --volume {{ log_file }}:/src/log_file.json \
+    --env HONEYCOMB_WRITE_KEY={{ api_key }} \
+    ghcr.io/opensafely-core/honeytail:latest

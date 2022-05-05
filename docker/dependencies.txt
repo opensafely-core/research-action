@@ -1,0 +1,3 @@
+# list ubuntu packages needed in production, one per line
+golang-go
+wget
