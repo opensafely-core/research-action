@@ -66,4 +66,5 @@ runs:
         docker run --pull=missing --rm \
         --volume $GITHUB_ACTION_PATH/${{ inputs.directory }}/metadata/extracted_stats.json:/src/log_file.json \
         --env HONEYCOMB_WRITE_KEY=$HONEYCOMB_API_KEY \
+        --env DATASET=research-action \
         ghcr.io/opensafely-core/honeytail:latest
