@@ -26,4 +26,4 @@ services:
     extends:
       service: honeytail
     environment:
-    - DATASET=research-action-test
+      - DATASET=research-action-test

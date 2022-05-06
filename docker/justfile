@@ -42,4 +42,5 @@ run_image log_file api_key:
     docker run --pull=missing --rm \
     --volume {{ log_file }}:/src/log_file.json \
     --env HONEYCOMB_WRITE_KEY={{ api_key }} \
+    --env DATASET=research-action \
     ghcr.io/opensafely-core/honeytail:latest

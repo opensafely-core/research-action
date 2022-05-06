@@ -17,6 +17,7 @@ RUN wget -q -O honeytail https://honeycomb.io/download/honeytail/v1.6.0/honeytai
       chmod 755 ./honeytail
 
 ENV HONEYCOMB_WRITE_KEY NULL
+ENV DATASET NULL
 # The target log file is mounted to this location when the container is run
 ENV LOG_FILENAME /src/log_file.json
 
