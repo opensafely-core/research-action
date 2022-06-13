@@ -6,7 +6,7 @@ inputs:
   users:
     description: "@names of users who should be notified on dataset failure"
     required: false
-    default: "@amirmehrkar @Jongmassey @bloodearnest @inglesp"
+    default: "@amirmehrkar @Jongmassey @inglesp"
 
 outputs:
   issue:
