@@ -13,9 +13,9 @@ jobs:
       HONEYCOMB_API_KEY: dummy-key
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Checkout gh-testing-research
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
             repository: opensafely/gh-testing-research
             path: gh-testing-research
@@ -36,9 +36,9 @@ jobs:
     name: Test no Honeycomb API key
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Checkout gh-testing-research
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
             repository: opensafely/gh-testing-research
             path: gh-testing-research-no-honeycomb-key
@@ -59,9 +59,9 @@ jobs:
       HONEYCOMB_API_KEY: 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Checkout gh-testing-research
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
             repository: opensafely/gh-testing-research
             path: gh-testing-research-no-honeycomb-key
@@ -80,7 +80,7 @@ jobs:
     name: Lint action
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Lint
         run: make lint
  
@@ -89,7 +89,7 @@ jobs:
     name: Test report codelists need updating
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Test project with failing codelists check
         uses: ./
         id: codelists
@@ -108,7 +108,7 @@ jobs:
     name: Test dataset check failure
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Test project with failing codelists check
         uses: ./
         id: dataset
