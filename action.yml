@@ -1,3 +1,6 @@
+name: "OpenSAFELY Research Action"
+description: "Verifies that OpenSAFELY research repos can run correctly"
+
 inputs:
   directory: 
     description: "Directory containing OpenSAFELY project"
