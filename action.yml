@@ -1,3 +1,6 @@
+name: "OpenSAFELY Research Action"
+description: "Verifies that OpenSAFELY research repos can run correctly"
+
 inputs:
   directory: 
     description: "Directory containing OpenSAFELY project"
@@ -6,7 +9,7 @@ inputs:
   users:
     description: "@names of users who should be notified on dataset failure"
     required: false
-    default: "@amirmehrkar @JulietUnderdown1 @LiamHart-hub @iaindillingham"
+    default: "@amirmehrkar @JulietUnderdown1 @LiamHart-hub @alexwalkerepi"
 
 outputs:
   issue:
