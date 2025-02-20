@@ -10,6 +10,10 @@ inputs:
     description: "@names of users who should be notified on dataset failure"
     required: false
     default: "@amirmehrkar @JulietUnderdown1 @LiamHart-hub @alexwalkerepi"
+  actions:
+    description: "Names of project actions to run during tests (default 'run_all')"
+    required: false
+    default: "run_all"
 
 outputs:
   issue:
@@ -56,7 +60,7 @@ runs:
     - name: Run project
       shell: bash
       working-directory: ${{ inputs.directory }}
-      run: opensafely run run_all --continue-on-error --timestamps --format-output-for-github
+      run: opensafely run ${{ inputs.actions }} --continue-on-error --timestamps --format-output-for-github
     - name: Parse stats logs
       if: ${{ env.HONEYCOMB_API_KEY }}
       shell: bash

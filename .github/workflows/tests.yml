@@ -31,6 +31,38 @@ jobs:
                 echo "Action should have created extracted_stats.json file"
                 exit 1
             fi
+  test-single-action:
+    runs-on: ubuntu-20.04
+    name: Test single action
+    env:
+      HONEYCOMB_API_KEY: dummy-key
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Checkout gh-testing-research
+        uses: actions/checkout@v4
+        with:
+            repository: opensafely/gh-testing-research
+            path: gh-testing-research
+      - name: Run action
+        uses: ./
+        with:
+            directory: gh-testing-research
+            actions: generate_dataset
+      - name: Assert dataset.csv file created but not model.log file
+        run: |
+            if test -f gh-testing-research/output/dataset.csv; then
+                echo "output/dataset.csv file exists"
+            else
+                echo "Action should have created output/dataset.csv"
+                exit 1
+            fi
+            if test -f gh-testing-research/logs/model.log; then
+                echo "Action should not have created logs/model.log file"
+                exit 1
+            else
+                echo "logs/model.log file does not exist"
+            fi
   test-no-honeycomb-api-key:
     runs-on: ubuntu-20.04
     name: Test no Honeycomb API key
