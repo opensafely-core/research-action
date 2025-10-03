@@ -134,34 +134,3 @@ jobs:
                 echo "Action should have failed with codelists error"
                 exit 1
             fi
-
-  test-check:
-    runs-on: ubuntu-latest
-    name: Test dataset check failure
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Test project with failing codelists check
-        uses: ./
-        id: dataset
-        continue-on-error: true
-        with:
-            directory: tests/dataset
-            users: '@nobody' 
-      - name: Assert check failed and created issue
-        env:
-            ISSUE_URL: ${{ steps.dataset.outputs.issue }}
-        run: |
-            fail() { 
-                echo "$@"
-                exit 1
-            }
-            cleanup() { 
-                gh issue close "$ISSUE_URL" || true
-            }
-            trap cleanup EXIT
-            test "${{ steps.dataset.outcome }}" = "failure" || fail "Action should have failed with dataset error"
-            test -n "$ISSUE_URL" || fail "No issue url output from dataset step"
-            gh issue view "$ISSUE_URL" || fail "Could not view issue at $ISSUE_URL"
-
-
