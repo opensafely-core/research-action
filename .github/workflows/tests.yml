@@ -7,7 +7,7 @@ env:
 
 jobs:
   test-action:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Test action
     env:
       HONEYCOMB_API_KEY: dummy-key
@@ -32,7 +32,7 @@ jobs:
                 exit 1
             fi
   test-single-action:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Test single action
     env:
       HONEYCOMB_API_KEY: dummy-key
@@ -64,7 +64,7 @@ jobs:
                 echo "logs/model.log file does not exist"
             fi
   test-no-honeycomb-api-key:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Test no Honeycomb API key
     steps:
       - name: Checkout
@@ -85,7 +85,7 @@ jobs:
                 exit 1
             fi
   test-honeycomb-api-key-empty:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Test Honeycomb API key empty
     env:
       HONEYCOMB_API_KEY: 
@@ -108,7 +108,7 @@ jobs:
                 exit 1
             fi
   lint-action:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Lint action
     steps:
       - name: Checkout
@@ -117,7 +117,7 @@ jobs:
         run: make lint
  
   test-codelists:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Test report codelists need updating
     steps:
       - name: Checkout
@@ -136,7 +136,7 @@ jobs:
             fi
 
   test-check:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Test dataset check failure
     steps:
       - name: Checkout
